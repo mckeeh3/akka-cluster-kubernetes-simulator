@@ -1,5 +1,6 @@
 package cluster;
 
+import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.ActorSystem;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.Terminated;
@@ -9,18 +10,22 @@ import akka.management.javadsl.AkkaManagement;
 
 class Main {
   static Behavior<Void> create() {
-    return Behaviors.setup(
-        context -> Behaviors.receive(Void.class)
+    return Behaviors.setup(context -> {
+          bootstrap(context);
+
+          return Behaviors.receive(Void.class)
             .onSignal(Terminated.class, signal -> Behaviors.stopped())
-            .build()
-    );
+            .build();
+        });
+  }
+
+  private static void bootstrap(final ActorContext<Void> context) {
+    context.spawn(ClusterListenerActor.create(), "clusterListener");
   }
 
   public static void main(String[] args) {
     final ActorSystem<?> actorSystem = ActorSystem.create(Main.create(), "cluster");
     startClusterBootstrap(actorSystem);
-
-    ClusterListenerActor.create();
   }
 
   private static void startClusterBootstrap(ActorSystem<?> actorSystem) {
