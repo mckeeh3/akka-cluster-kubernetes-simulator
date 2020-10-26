@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: akka-k8-simulator
-          image: akka-k8-simulator:latest
+          image: mckeeh3/akka-k8-simulator:latest
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
