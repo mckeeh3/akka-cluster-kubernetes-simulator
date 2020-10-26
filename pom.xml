@@ -218,7 +218,7 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>woe.simulator.Main</Main-Class>
+                                        <Main-Class>.Main</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
@@ -265,7 +265,7 @@
                                     <port>8558</port>
                                 </ports>
                                 <entryPoint>
-                                    java $JAVA_OPTS -cp '/maven/*' woe.simulator.Main
+                                    java $JAVA_OPTS -cp '/maven/*' cluster.Main
                                 </entryPoint>
                                 <assembly>
                                     <descriptorRef>artifact-with-dependencies</descriptorRef>
