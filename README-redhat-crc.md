@@ -1,3 +1,4 @@
+
 # Deployment to Red Hat Code Ready Containers
 
 Instructions for deploying to Red Hat Code Ready Containers environment.
@@ -99,4 +100,21 @@ Then deploy the microservice.
 
 ~~~bash
 kubectl apply -f kubernetes/akka-cluster-red-hat-crc.yml
+~~~
+~~~
+deployment.apps/woe-twin created
+role.rbac.authorization.k8s.io/pod-reader created
+rolebinding.rbac.authorization.k8s.io/read-pods created
+~~~
+
+Check if the pods are running. This may take a few moments.
+
+~~~bash
+$ kubectl get pods                                          
+~~~
+~~~
+NAME                         READY   STATUS    RESTARTS   AGE
+simulator-5b4cf87d4d-5b7w6   1/1     Running   0          3m31s
+simulator-5b4cf87d4d-hzp7n   1/1     Running   0          3m31s
+simulator-5b4cf87d4d-pbst2   1/1     Running   0          3m31s
 ~~~
