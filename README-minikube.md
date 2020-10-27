@@ -93,7 +93,7 @@ Deploy the Docker images to the Kubernetes cluster.
 $ kubectl apply -f kubernetes/akka-cluster-minikube.yml
 ~~~
 ~~~
-deployment.apps/woe-twin created
+deployment.apps/simulator created
 role.rbac.authorization.k8s.io/pod-reader created
 rolebinding.rbac.authorization.k8s.io/read-pods created
 ~~~

@@ -62,7 +62,7 @@ If not already created, create a project. This creates a Kubernetes namespace wi
 $ oc new-project simulator
 ~~~
 
-#### Clone the GitHub Repo
+#### Clone the GitHub Repoisitory
 
 Git clone the project repoisitory.
 
