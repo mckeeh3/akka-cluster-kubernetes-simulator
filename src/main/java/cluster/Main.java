@@ -1,11 +1,9 @@
 package cluster;
 
-import akka.actor.typed.javadsl.ActorContext;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import akka.actor.typed.ActorSystem;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.Terminated;
+import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.management.cluster.bootstrap.ClusterBootstrap;
 import akka.management.javadsl.AkkaManagement;
