@@ -42,13 +42,14 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
 
   private Behavior<EntityCommand> onTick() {
     final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
-    final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date());
+    final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date(), System.nanoTime());
+    log().info("Request {}", changeValue);
     httpClient.post(changeValue)
       .thenAccept(t -> {
         if (t.httpStatusCode != 200) {
           log().warn("Change value request failed {}", t);
         } else {
-          log().info("{}", t);
+          log().info("Response {}", t);
         }
       });
     return this;

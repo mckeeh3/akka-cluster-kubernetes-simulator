@@ -41,13 +41,14 @@ class HttpClient {
             .withHeaders(Collections.singletonList(RawHeader.create("Connection", "close")))
             .withEntity(toHttpEntity(changeValue)))
         .thenCompose(r -> {
-          actorSystem.log().info("change value response {}", r);
-          if (r.status().isSuccess()) {
-            return Jackson.unmarshaller(EntityCommand.ChangeValueAck.class).unmarshal(r.entity(), materializer);
-          } else {
-            return CompletableFuture.completedFuture(
-              new EntityCommand.ChangeValueAck(changeValue.id, changeValue.value, changeValue.nsStart, r.status().reason(), r.status().intValue()));
-          }
+            actorSystem.log().info("JSON {}", toJson(changeValue));
+            actorSystem.log().info("change value response {}", r);
+            if (r.status().isSuccess()) {
+              return Jackson.unmarshaller(EntityCommand.ChangeValueAck.class).unmarshal(r.entity(), materializer);
+            } else {
+              return CompletableFuture.completedFuture(
+                new EntityCommand.ChangeValueAck(changeValue.id, changeValue.value, changeValue.nsStart, r.status().reason(), r.status().intValue()));
+            }
         });
   }
 
@@ -57,13 +58,14 @@ class HttpClient {
             .withHeaders(Collections.singletonList(RawHeader.create("Connection", "close")))
             .withEntity(toHttpEntity(getValue)))
         .thenCompose(r -> {
-          actorSystem.log().info("change value response {}", r);
-          if (r.status().isSuccess()) {
-            return Jackson.unmarshaller(EntityCommand.GetValueAck.class).unmarshal(r.entity(), materializer);
-          } else {
-            return CompletableFuture.completedFuture(
-              new EntityCommand.GetValueAck(getValue.id, null, getValue.nsStart, r.status().reason(), r.status().intValue()));
-          }
+            actorSystem.log().info("JSON {}", toJson(getValue));
+            actorSystem.log().info("change value response {}", r);
+            if (r.status().isSuccess()) {
+              return Jackson.unmarshaller(EntityCommand.GetValueAck.class).unmarshal(r.entity(), materializer);
+            } else {
+              return CompletableFuture.completedFuture(
+                new EntityCommand.GetValueAck(getValue.id, null, getValue.nsStart, r.status().reason(), r.status().intValue()));
+            }
         });
   }
 

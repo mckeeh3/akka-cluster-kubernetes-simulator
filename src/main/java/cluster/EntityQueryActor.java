@@ -42,13 +42,14 @@ class EntityQueryActor extends AbstractBehavior<EntityCommand> {
 
   private Behavior<EntityCommand> onTick() {
     final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
-    final GetValue getValue = new EntityCommand.GetValue(entityId);
+    final GetValue getValue = new EntityCommand.GetValue(entityId, System.nanoTime());
+    log().info("Request {}", getValue);
     httpClient.post(getValue)
       .thenAccept(t -> {
         if (t.httpStatusCode != 200) {
           log().warn("Get value request failed {}", t);
         } else {
-          log().info("{}", t);
+          log().info("Response {}", t);
         }
       });
     return this;

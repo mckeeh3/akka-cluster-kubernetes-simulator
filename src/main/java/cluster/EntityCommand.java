@@ -1,22 +1,20 @@
 package cluster;
 
-import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import akka.actor.typed.ActorSystem;
 
-public interface EntityCommand extends Serializable {
+public interface EntityCommand extends CborSerializable {
 
   public static class ChangeValue implements EntityCommand {
-    private static final long serialVersionUID = 1L;
     public final String id;
     public final Object value;
     public final long nsStart;
 
     @JsonCreator
-    public ChangeValue(String id, Object value) {
+    public ChangeValue(String id, Object value, long nsStart) {
       this.id = id;
       this.value = value;
-      nsStart = System.nanoTime();
+      this.nsStart = nsStart;
     }
 
     @Override
@@ -26,7 +24,6 @@ public interface EntityCommand extends Serializable {
   }
 
   public static class ChangeValueAck implements EntityCommand {
-    private static final long serialVersionUID = 1L;
     public final String id;
     public final Object value;
     public final long nsStart;
@@ -49,14 +46,13 @@ public interface EntityCommand extends Serializable {
   }
 
   public static class GetValue implements EntityCommand {
-    private static final long serialVersionUID = 1L;
     public final String id;
     public final long nsStart;
 
     @JsonCreator
-    public GetValue(String id) {
+    public GetValue(String id, long nsStart) {
       this.id = id;
-      nsStart = System.nanoTime();
+      this.nsStart = nsStart;
     }
 
     @Override
@@ -66,7 +62,6 @@ public interface EntityCommand extends Serializable {
   }
 
   public static class GetValueAck implements EntityCommand {
-    private static final long serialVersionUID = 1L;
     public final String id;
     public final Object value;
     public final long nsStart;
