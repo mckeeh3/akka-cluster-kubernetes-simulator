@@ -1,0 +1,64 @@
+package cluster;
+
+import java.time.Duration;
+import java.util.Date;
+import org.slf4j.Logger;
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.AbstractBehavior;
+import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
+import akka.actor.typed.javadsl.Receive;
+import akka.actor.typed.javadsl.TimerScheduler;
+
+class EntityCommandActor extends AbstractBehavior<EntityCommand> {
+  private final ActorContext<EntityCommand> actorContext;
+  private final HttpClient httpClient;
+  private final int entitiesPerNode;
+  private final String nodeId;
+
+  static Behavior<EntityCommand> create(HttpClient httpClient) {
+    return Behaviors.setup(actorContext -> 
+        Behaviors.withTimers(timer -> new EntityCommandActor(actorContext, timer, httpClient)));
+  }
+
+  private EntityCommandActor(ActorContext<EntityCommand> actorContext, TimerScheduler<EntityCommand> timerScheduler, HttpClient httpClient) {
+    super(actorContext);
+    this.actorContext = actorContext;
+    this.httpClient = httpClient;
+
+    entitiesPerNode = actorContext.getSystem().settings().config().getInt("entity-actor.entities-per-node");
+    nodeId = EntityCommand.nodeId(actorContext.getSystem());
+
+    final Duration interval = Duration.parse(actorContext.getSystem().settings().config().getString("entity-actor.command-tick-interval-iso-8601"));
+    timerScheduler.startTimerWithFixedDelay(Tick.ticktock, interval);
+  }
+
+  @Override
+  public Receive<EntityCommand> createReceive() {
+    return newReceiveBuilder()
+        .onMessage(Tick.class, t -> onTick())
+        .build();
+  }
+
+  private Behavior<EntityCommand> onTick() {
+    final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
+    final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date());
+    httpClient.post(changeValue)
+      .thenAccept(t -> {
+        if (t.httpStatusCode != 200) {
+          log().warn("Change value request failed {}", t);
+        } else {
+          log().info("{}", t);
+        }
+      });
+    return this;
+  }
+
+  private Logger log() {
+    return actorContext.getSystem().log();
+  }
+
+  enum Tick implements EntityCommand {
+    ticktock
+  }
+}
