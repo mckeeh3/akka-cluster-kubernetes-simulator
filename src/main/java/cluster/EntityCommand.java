@@ -1,6 +1,7 @@
 package cluster;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import akka.actor.typed.ActorSystem;
 
 public interface EntityCommand extends CborSerializable {
@@ -11,7 +12,10 @@ public interface EntityCommand extends CborSerializable {
     public final long nsStart;
 
     @JsonCreator
-    public ChangeValue(String id, Object value, long nsStart) {
+    public ChangeValue(
+      @JsonProperty("id") String id, 
+      @JsonProperty("value") Object value, 
+      @JsonProperty("nsStart") long nsStart) { 
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -31,7 +35,12 @@ public interface EntityCommand extends CborSerializable {
     public final int httpStatusCode;
 
     @JsonCreator
-    public ChangeValueAck(String id, Object value, long nsStart, String message, int httpStatusCode) {
+    public ChangeValueAck(
+      @JsonProperty("id") String id, 
+      @JsonProperty("value") Object value, 
+      @JsonProperty("nsStart") long nsStart, 
+      @JsonProperty("message") String message, 
+      @JsonProperty("httpStatusCode") int httpStatusCode) {
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -41,7 +50,8 @@ public interface EntityCommand extends CborSerializable {
 
     @Override
     public String toString() {
-      return String.format("%s[%,d, %s, %s, %s, %d]", getClass().getSimpleName(), nsStart, id, value, message, httpStatusCode);
+      final long responseTime = System.nanoTime() - nsStart;
+      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message, httpStatusCode);
     }
   }
 
@@ -50,14 +60,16 @@ public interface EntityCommand extends CborSerializable {
     public final long nsStart;
 
     @JsonCreator
-    public GetValue(String id, long nsStart) {
+    public GetValue(
+      @JsonProperty("id") String id, 
+      @JsonProperty("nsStart") long nsStart) {
       this.id = id;
       this.nsStart = nsStart;
     }
 
     @Override
     public String toString() {
-      return String.format("%s[%,d, %s]", getClass().getSimpleName(), nsStart, id);
+      return String.format("%s[%s]", getClass().getSimpleName(), id);
     }
   }
 
@@ -69,7 +81,12 @@ public interface EntityCommand extends CborSerializable {
     public final int httpStatusCode;
 
     @JsonCreator
-    public GetValueAck(String id, Object value, long nsStart, String message, int httpStatusCode) {
+    public GetValueAck(
+      @JsonProperty("id") String id, 
+      @JsonProperty("value") Object value, 
+      @JsonProperty("nsStart") long nsStart, 
+      @JsonProperty("message") String message, 
+      @JsonProperty("httpStatusCode") int httpStatusCode) {
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -79,7 +96,8 @@ public interface EntityCommand extends CborSerializable {
 
     @Override
     public String toString() {
-      return String.format("%s[%,d, %s, %s, %s, %d]", getClass().getSimpleName(), nsStart, id, value, message, httpStatusCode);
+      final long responseTime = System.nanoTime() - nsStart;
+      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message, httpStatusCode);
     }
   }
 

@@ -37,6 +37,7 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
   public Receive<EntityCommand> createReceive() {
     return newReceiveBuilder()
         .onMessage(Tick.class, t -> onTick())
+        .onMessage(EntityCommand.ChangeValueAck.class, this::onChangeValueAck)
         .build();
   }
 
@@ -44,14 +45,20 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
     final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
     final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date(), System.nanoTime());
     log().info("Request {}", changeValue);
-    httpClient.post(changeValue)
-      .thenAccept(t -> {
-        if (t.httpStatusCode != 200) {
-          log().warn("Change value request failed {}", t);
+    actorContext.pipeToSelf(
+      httpClient.post(changeValue),
+      (r, e) -> {
+        if (e == null) {
+          return r;
         } else {
-          log().info("Response {}", t);
+          return new EntityCommand.ChangeValueAck(changeValue.id, changeValue.value, changeValue.nsStart, e.getMessage(), 500);
         }
       });
+    return this;
+  }
+
+  private Behavior<EntityCommand> onChangeValueAck(EntityCommand.ChangeValueAck changeValueAck) {
+    log().info("Response {}", changeValueAck);
     return this;
   }
 

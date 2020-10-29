@@ -41,8 +41,6 @@ class HttpClient {
             .withHeaders(Collections.singletonList(RawHeader.create("Connection", "close")))
             .withEntity(toHttpEntity(changeValue)))
         .thenCompose(r -> {
-            actorSystem.log().info("JSON {}", toJson(changeValue));
-            actorSystem.log().info("change value response {}", r);
             if (r.status().isSuccess()) {
               return Jackson.unmarshaller(EntityCommand.ChangeValueAck.class).unmarshal(r.entity(), materializer);
             } else {
@@ -58,8 +56,6 @@ class HttpClient {
             .withHeaders(Collections.singletonList(RawHeader.create("Connection", "close")))
             .withEntity(toHttpEntity(getValue)))
         .thenCompose(r -> {
-            actorSystem.log().info("JSON {}", toJson(getValue));
-            actorSystem.log().info("change value response {}", r);
             if (r.status().isSuccess()) {
               return Jackson.unmarshaller(EntityCommand.GetValueAck.class).unmarshal(r.entity(), materializer);
             } else {

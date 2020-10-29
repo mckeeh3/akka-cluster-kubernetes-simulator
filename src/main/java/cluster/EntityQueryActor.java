@@ -37,6 +37,7 @@ class EntityQueryActor extends AbstractBehavior<EntityCommand> {
   public Receive<EntityCommand> createReceive() {
     return newReceiveBuilder()
         .onMessage(Tick.class, t -> onTick())
+        .onMessage(EntityCommand.GetValueAck.class, this::onGetValueAck)
         .build();
   }
 
@@ -44,14 +45,20 @@ class EntityQueryActor extends AbstractBehavior<EntityCommand> {
     final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
     final GetValue getValue = new EntityCommand.GetValue(entityId, System.nanoTime());
     log().info("Request {}", getValue);
-    httpClient.post(getValue)
-      .thenAccept(t -> {
-        if (t.httpStatusCode != 200) {
-          log().warn("Get value request failed {}", t);
+    actorContext.pipeToSelf(
+      httpClient.post(getValue),
+      (r, e) -> {
+        if (e == null) {
+          return r;
         } else {
-          log().info("Response {}", t);
+          return new EntityCommand.GetValueAck(getValue.id, null, getValue.nsStart, e.getMessage(), 500);
         }
       });
+    return this;
+  }
+
+  private Behavior<EntityCommand> onGetValueAck(EntityCommand.GetValueAck getValueAck) {
+    log().info("Response {}", getValueAck);
     return this;
   }
     
