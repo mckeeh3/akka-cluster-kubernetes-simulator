@@ -27,6 +27,7 @@ class HttpClient {
     this.actorSystem = actorSystem;
     this.materializer = Materializer.matFromSystem(actorSystem.classicSystem());
     url = String.format("http://%s:%d/", host, port);
+    actorSystem.log().info("Start HTTP Clinet {}-{}", host, port);
   }
 
   HttpClient(ActorSystem<?> actorSystem, String url) {
