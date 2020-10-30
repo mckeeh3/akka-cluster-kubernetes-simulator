@@ -14,7 +14,7 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
   private final ActorContext<EntityCommand> actorContext;
   private final HttpClient httpClient;
   private final int entitiesPerNode;
-  private final String nodeId;
+  private final IpId.Client client;
 
   static Behavior<EntityCommand> create(HttpClient httpClient) {
     return Behaviors.setup(actorContext -> 
@@ -27,7 +27,7 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
     this.httpClient = httpClient;
 
     entitiesPerNode = actorContext.getSystem().settings().config().getInt("entity-actor.entities-per-node");
-    nodeId = EntityCommand.nodeId(actorContext.getSystem());
+    client = IpId.Client.of(actorContext.getSystem());
 
     final Duration interval = Duration.parse(actorContext.getSystem().settings().config().getString("entity-actor.command-tick-interval-iso-8601"));
     timerScheduler.startTimerWithFixedDelay(Tick.ticktock, interval);
@@ -42,8 +42,8 @@ class EntityCommandActor extends AbstractBehavior<EntityCommand> {
   }
 
   private Behavior<EntityCommand> onTick() {
-    final String entityId = EntityCommand.randomEntityId(nodeId, entitiesPerNode);
-    final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date(), System.nanoTime());
+    final String entityId = EntityCommand.randomEntityId(client.id, entitiesPerNode);
+    final EntityCommand.ChangeValue changeValue = new EntityCommand.ChangeValue(entityId, new Date(), System.nanoTime(), client);
     log().info("Request {}", changeValue);
     actorContext.pipeToSelf(
       httpClient.post(changeValue),
