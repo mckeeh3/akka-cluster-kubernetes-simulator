@@ -1,5 +1,13 @@
 package cluster;
 
+import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import akka.actor.typed.ActorSystem;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.marshallers.jackson.Jackson;
@@ -9,14 +17,6 @@ import akka.http.javadsl.model.HttpEntity;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.headers.RawHeader;
 import akka.stream.Materializer;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 
 class HttpClient {
   private final ActorSystem<?> actorSystem;
@@ -71,7 +71,7 @@ class HttpClient {
   }
 
   private static String toJson(Object pojo) {
-    final ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    final var ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     try {
       return ow.writeValueAsString(pojo);
     } catch (JsonProcessingException e) {

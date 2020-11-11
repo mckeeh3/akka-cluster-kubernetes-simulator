@@ -29,13 +29,13 @@ class Main {
   }
 
   private static HttpClient startHttpClient(ActorSystem<?> actorSystem) {
-    final String host = actorSystem.settings().config().getString("visualizer.http.server.host");
-    final int port = actorSystem.settings().config().getInt("visualizer.http.server.port");
+    final var host = actorSystem.settings().config().getString("visualizer.http.server.host");
+    final var port = actorSystem.settings().config().getInt("visualizer.http.server.port");
     return new HttpClient(actorSystem, host, port);
   }
 
   public static void main(String[] args) {
-    final ActorSystem<?> actorSystem = ActorSystem.create(Main.create(), "cluster");
+    final var actorSystem = ActorSystem.create(Main.create(), "cluster");
     startClusterBootstrap(actorSystem);
   }
 

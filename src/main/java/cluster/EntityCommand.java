@@ -53,7 +53,7 @@ public interface EntityCommand extends CborSerializable {
 
     @Override
     public String toString() {
-      final long responseTime = System.nanoTime() - nsStart;
+      final var responseTime = System.nanoTime() - nsStart;
       return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message, httpStatusCode);
     }
   }
@@ -112,8 +112,8 @@ public interface EntityCommand extends CborSerializable {
   }
 
   static String sourceId(ActorSystem<?> actorSystem) {
-    final String sourceIp = sourceId(actorSystem);
-    final String[] ip = sourceIp.split("\\.");
+    final var sourceIp = sourceId(actorSystem);
+    final var ip = sourceIp.split("\\.");
     if (ip.length < 1) {
       throw new RuntimeException(String.format("Akka host (%s) must be a valid IPv4 address.", sourceIp));
     }

@@ -29,7 +29,7 @@ class EntityQueryActor extends AbstractBehavior<EntityCommand> {
     entitiesPerNode = actorContext.getSystem().settings().config().getInt("entity-actor.entities-per-node");
     client = IpId.Client.of(actorContext.getSystem());
 
-    final Duration interval = Duration.parse(actorContext.getSystem().settings().config().getString("entity-actor.query-tick-interval-iso-8601"));
+    final var interval = Duration.parse(actorContext.getSystem().settings().config().getString("entity-actor.query-tick-interval-iso-8601"));
     timerScheduler.startTimerWithFixedDelay(Tick.ticktock, interval);
   }
 
@@ -42,8 +42,8 @@ class EntityQueryActor extends AbstractBehavior<EntityCommand> {
   }
 
   private Behavior<EntityCommand> onTick() {
-    final String entityId = EntityCommand.randomEntityId(client.id, entitiesPerNode);
-    final GetValue getValue = new EntityCommand.GetValue(entityId, System.nanoTime(), client);
+    final var entityId = EntityCommand.randomEntityId(client.id, entitiesPerNode);
+    final var getValue = new EntityCommand.GetValue(entityId, System.nanoTime(), client);
     log().info("Request {}", getValue);
     actorContext.pipeToSelf(
       httpClient.post(getValue),
