@@ -1,14 +1,15 @@
 package cluster;
 
 import java.time.Duration;
+
 import org.slf4j.Logger;
+
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.javadsl.TimerScheduler;
-import cluster.EntityCommand.GetValue;
 
 class EntityQueryActor extends AbstractBehavior<EntityCommand> {
   private final ActorContext<EntityCommand> actorContext;
