@@ -22,7 +22,7 @@ class Main {
   private static void bootstrap(final ActorContext<Void> context) {
     context.spawn(ClusterListenerActor.create(), "clusterListener");
 
-    final HttpClient httpClient = startHttpClient(context.getSystem());
+    final var httpClient = startHttpClient(context.getSystem());
 
     context.spawn(EntityCommandActor.create(httpClient), "entityCommand");
     context.spawn(EntityQueryActor.create(httpClient), "entityQuery");
