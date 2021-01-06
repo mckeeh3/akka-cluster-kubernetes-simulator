@@ -1,4 +1,5 @@
-# akka-cluster-kubernetes-simulator
+
+# Akka Cluster Kubernetes Simulator
 
 A demonstration of a basic Akka Cluster running on Kubernetes traffic simulator for companion visualizer.
 
