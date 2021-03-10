@@ -42,7 +42,7 @@ To start the virtual machine with the desired amount of memory:
 crc start --memory <number-in-mib>
 ~~~
 
-#### Create CRC Project
+### Create CRC Project
 
 Get the login credentials using the following command.
 
@@ -62,7 +62,7 @@ If not already created, create a project. This creates a Kubernetes namespace wi
 oc new-project simulator
 ~~~
 
-#### Clone the GitHub Repoisitory
+### Clone the GitHub Repoisitory
 
 Git clone the project repoisitory.
 
@@ -70,7 +70,7 @@ Git clone the project repoisitory.
 git clone https://github.com/mckeeh3/akka-cluster-kubernetes-simulator.git
 ~~~
 
-#### Build and Upload the Docker Image
+### Build and Upload the Docker Image
 
 After cloning the project, `cd` into the project directory then build the Docker image.
 
@@ -88,7 +88,7 @@ $ docker tag akka-k8-simulator <your-docker-username>/akka-k8-simulator:latest
 $ docker push <your-docker-username>/akka-k8-simulator
 ~~~
 
-#### Deploy to Kubernetes
+### Deploy to Kubernetes
 
 First, edit the `kubernetes/akka-cluster-red-hat-crc.yml` file changing the Docker username.
 
