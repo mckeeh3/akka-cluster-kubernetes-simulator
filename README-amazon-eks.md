@@ -37,6 +37,11 @@ You may also want to create an alias for the `kubectl` command, such as `kc`.
 alias kc=kubectl
 ~~~
 
+## Deploy the Kubernetes Dashboard (Optional)
+
+You may want to deploy the Kubernetes dashboard. This is an optional step. To deploy the dashboard follow the
+[Tutorial: Deploy the Kubernetes Dashboard (web UI)](https://docs.aws.amazon.com/eks/latest/userguide/dashboard-tutorial.html).
+
 ## Clone the GitHub Repo
 
 Git clone the project repoisitory.
@@ -45,7 +50,7 @@ Git clone the project repoisitory.
 git clone https://github.com/mckeeh3/akka-cluster-kubernetes-simulator.git
 ~~~
 
-### Build and Upload the Docker Image
+## Build and Upload the Docker Image
 
 After cloning the project, `cd` into the project directory then build the Docker image.
 
@@ -65,7 +70,7 @@ $ docker tag akka-k8-simulator <your-docker-username>/akka-k8-simulator:latest
 $ docker push <your-docker-username>/akka-k8-simulator
 ~~~
 
-### Deploy to Amazon Eks
+## Deploy to Amazon Eks
 
 First, edit the `kubernetes/akka-cluster-amazon-eks.yml` file changing the Docker username.
 
@@ -95,7 +100,7 @@ simulator-5b4cf87d4d-hzp7n   1/1     Running   0          3m31s
 simulator-5b4cf87d4d-pbst2   1/1     Running   0          3m31s
 ~~~
 
-### Scale the Akka cluster
+## Scale the Akka cluster
 
 Use the following commands to scale the Akka cluster nodes by adjusting the number of Kubernetes pods.
 
