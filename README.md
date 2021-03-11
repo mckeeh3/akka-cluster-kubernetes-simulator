@@ -9,4 +9,4 @@ A demonstration of a basic Akka Cluster running on Kubernetes traffic simulator 
 
 [Red Hat Code Ready Containers](https://github.com/mckeeh3/akka-cluster-kubernetes-simulator/blob/main/README-minikube.md)
 
-[Amazon EKS](https://github.com/mckeeh3/akka-cluster-kubernetes-visualizer/blob/main/README-amazon-eks.md)
+[Amazon EKS](https://github.com/mckeeh3/akka-cluster-kubernetes-simulator/blob/main/README-amazon-eks.md)
