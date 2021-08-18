@@ -13,11 +13,8 @@ public interface EntityCommand extends CborSerializable {
     public final IpId.Client httpClient;
 
     @JsonCreator
-    public ChangeValue(
-      @JsonProperty("id") String id, 
-      @JsonProperty("value") Object value, 
-      @JsonProperty("nsStart") long nsStart,
-      @JsonProperty("httpClient") IpId.Client httpClient) {
+    public ChangeValue(@JsonProperty("id") String id, @JsonProperty("value") Object value,
+        @JsonProperty("nsStart") long nsStart, @JsonProperty("httpClient") IpId.Client httpClient) {
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -38,12 +35,9 @@ public interface EntityCommand extends CborSerializable {
     public final int httpStatusCode;
 
     @JsonCreator
-    public ChangeValueAck(
-      @JsonProperty("id") String id, 
-      @JsonProperty("value") Object value, 
-      @JsonProperty("nsStart") long nsStart, 
-      @JsonProperty("message") String message, 
-      @JsonProperty("httpStatusCode") int httpStatusCode) {
+    public ChangeValueAck(@JsonProperty("id") String id, @JsonProperty("value") Object value,
+        @JsonProperty("nsStart") long nsStart, @JsonProperty("message") String message,
+        @JsonProperty("httpStatusCode") int httpStatusCode) {
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -54,7 +48,8 @@ public interface EntityCommand extends CborSerializable {
     @Override
     public String toString() {
       final var responseTime = System.nanoTime() - nsStart;
-      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message, httpStatusCode);
+      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message,
+          httpStatusCode);
     }
   }
 
@@ -64,10 +59,8 @@ public interface EntityCommand extends CborSerializable {
     public final IpId.Client httpClient;
 
     @JsonCreator
-    public GetValue(
-      @JsonProperty("id") String id, 
-      @JsonProperty("nsStart") long nsStart,
-      @JsonProperty("httpClient") IpId.Client httpClient) {
+    public GetValue(@JsonProperty("id") String id, @JsonProperty("nsStart") long nsStart,
+        @JsonProperty("httpClient") IpId.Client httpClient) {
       this.id = id;
       this.nsStart = nsStart;
       this.httpClient = httpClient;
@@ -87,12 +80,9 @@ public interface EntityCommand extends CborSerializable {
     public final int httpStatusCode;
 
     @JsonCreator
-    public GetValueAck(
-      @JsonProperty("id") String id, 
-      @JsonProperty("value") Object value, 
-      @JsonProperty("nsStart") long nsStart, 
-      @JsonProperty("message") String message, 
-      @JsonProperty("httpStatusCode") int httpStatusCode) {
+    public GetValueAck(@JsonProperty("id") String id, @JsonProperty("value") Object value,
+        @JsonProperty("nsStart") long nsStart, @JsonProperty("message") String message,
+        @JsonProperty("httpStatusCode") int httpStatusCode) {
       this.id = id;
       this.value = value;
       this.nsStart = nsStart;
@@ -103,7 +93,8 @@ public interface EntityCommand extends CborSerializable {
     @Override
     public String toString() {
       final long responseTime = System.nanoTime() - nsStart;
-      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message, httpStatusCode);
+      return String.format("%s[%,dns, %s, %s, %s, %d]", getClass().getSimpleName(), responseTime, id, value, message,
+          httpStatusCode);
     }
   }
 
